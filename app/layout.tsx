@@ -1,5 +1,6 @@
 import { Nunito, Outfit } from "next/font/google";
 import type { Metadata, Viewport } from "next";
+import { getSiteUrl } from "@/lib/site";
 import "./globals.css";
 
 const display = Nunito({
@@ -16,9 +17,7 @@ const sans = Outfit({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
-  ),
+  metadataBase: new URL(getSiteUrl()),
   title: "BONİN · Menü",
   description: "BONİN Bakery & Eatery · Günün en güzel anı",
 };
