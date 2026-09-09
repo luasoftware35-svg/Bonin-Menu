@@ -1,22 +1,49 @@
 import type { Category, Product } from "@/lib/types";
 
-export const FEATURED_PRODUCT_NAME = "Çilekli Magnolya";
+export type FeaturedEntry = {
+  product: Product;
+  categoryName: string;
+};
 
-export function findFeaturedProduct(
-  categories: Category[],
-): { product: Product; categoryName: string } | null {
-  for (const category of categories) {
-    const product = category.products.find(
-      (entry) => entry.name === FEATURED_PRODUCT_NAME,
-    );
-    if (product) {
-      return { product, categoryName: category.name };
-    }
+function daySeed(date = new Date()) {
+  return (
+    date.getFullYear() * 10000 +
+    (date.getMonth() + 1) * 100 +
+    date.getDate()
+  );
+}
+
+function seededShuffle<T>(items: T[], seed: number) {
+  const list = [...items];
+  let state = seed >>> 0;
+
+  for (let i = list.length - 1; i > 0; i -= 1) {
+    state = (state * 1664525 + 1013904223) >>> 0;
+    const j = state % (i + 1);
+    [list[i], list[j]] = [list[j], list[i]];
   }
 
-  const firstCategory = categories[0];
-  const firstProduct = firstCategory?.products[0];
-  if (!firstProduct || !firstCategory) return null;
+  return list;
+}
 
-  return { product: firstProduct, categoryName: firstCategory.name };
+export function getDailyFeaturedProducts(
+  categories: Category[],
+  min = 3,
+  max = 5,
+): FeaturedEntry[] {
+  const pool = categories.flatMap((category) =>
+    category.products.map((product) => ({
+      product,
+      categoryName: category.name,
+    })),
+  );
+
+  if (pool.length === 0) return [];
+
+  const seed = daySeed();
+  const count = Math.min(
+    pool.length,
+    min + (seed % (max - min + 1)),
+  );
+  return seededShuffle(pool, seed).slice(0, count);
 }

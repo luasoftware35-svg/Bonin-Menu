@@ -5,14 +5,14 @@ import { useMemo, useRef, useState } from "react";
 import { CategoryNav } from "@/components/menu/CategoryNav";
 import { CompactHeader } from "@/components/menu/CompactHeader";
 import { EmptySearchState } from "@/components/menu/EmptySearchState";
-import { FeaturedPick } from "@/components/menu/FeaturedPick";
+import { FeaturedCarousel } from "@/components/menu/FeaturedCarousel";
 import { MenuFooter } from "@/components/menu/MenuFooter";
 import { GenuaPartner } from "@/components/menu/GenuaPartner";
 import { MenuHero } from "@/components/menu/MenuHero";
 import { MenuSearch } from "@/components/menu/MenuSearch";
 import { ProductCard } from "@/components/menu/ProductCard";
 import { ProductSheet } from "@/components/menu/ProductSheet";
-import { findFeaturedProduct } from "@/lib/featured";
+import { getDailyFeaturedProducts } from "@/lib/featured";
 import { categorySlideVariants } from "@/lib/motion";
 import { normalizeSearchQuery, searchMenuProducts } from "@/lib/search";
 import { useScrollCompact } from "@/lib/useScrollCompact";
@@ -55,9 +55,14 @@ export function MenuView({ menu }: { menu: MenuData }) {
     [activeId, categories],
   );
 
-  const featured = useMemo(
-    () => findFeaturedProduct(categories),
+  const dailyFeatured = useMemo(
+    () => getDailyFeaturedProducts(categories),
     [categories],
+  );
+
+  const featuredIds = useMemo(
+    () => new Set(dailyFeatured.map((entry) => entry.product.id)),
+    [dailyFeatured],
   );
 
   const isSearching = normalizeSearchQuery(searchQuery).length > 0;
@@ -88,8 +93,6 @@ export function MenuView({ menu }: { menu: MenuData }) {
     setPhotoSource(null);
   }
 
-  const featuredId = featured?.product.id;
-
   return (
     <LayoutGroup id="bonin-menu">
       <div className="menu-canvas">
@@ -100,17 +103,13 @@ export function MenuView({ menu }: { menu: MenuData }) {
             ticker={categories.map((category) => category.name)}
             scrollProgress={scrollProgress}
           />
-          {featured && !isSearching ? (
-            <FeaturedPick
-              product={featured.product}
-              categoryName={featured.categoryName}
+          {dailyFeatured.length > 0 && !isSearching ? (
+            <FeaturedCarousel
+              items={dailyFeatured}
               currency={menu.tenant.currency}
               locale={menu.tenant.locale}
-              sharedPhoto={
-                !selected ||
-                (selected.id === featured.product.id &&
-                  photoSource === "featured")
-              }
+              selectedId={selected?.id ?? null}
+              photoSource={photoSource}
               onOpen={(product) => openProduct(product, "featured")}
             />
           ) : null}
@@ -164,7 +163,7 @@ export function MenuView({ menu }: { menu: MenuData }) {
                           liveFilter
                           sharedPhoto={
                             (!selected || selected.id !== product.id) &&
-                            product.id !== featuredId
+                            !featuredIds.has(product.id)
                           }
                         />
                       ))}
@@ -213,7 +212,7 @@ export function MenuView({ menu }: { menu: MenuData }) {
                           (!selected ||
                             (selected.id === product.id &&
                               photoSource === "grid")) &&
-                          product.id !== featuredId
+                          !featuredIds.has(product.id)
                         }
                       />
                     ))}

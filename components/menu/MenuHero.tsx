@@ -45,16 +45,6 @@ export function MenuHero({
         }
       >
         <BrandLogo priority />
-        {!reduced ? (
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-x-0 -bottom-1 mx-auto h-8 w-16"
-          >
-            <span className="steam-rise steam-rise-a" />
-            <span className="steam-rise steam-rise-b" />
-            <span className="steam-rise steam-rise-c" />
-          </div>
-        ) : null}
       </motion.div>
       {tenant.tagline ? (
         <motion.p
