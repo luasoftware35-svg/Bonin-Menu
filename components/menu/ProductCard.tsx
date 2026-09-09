@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { formatPrice } from "@/lib/format";
 import { PHOTO_FIT, PHOTO_WELL } from "@/lib/photo";
 import type { Product } from "@/lib/types";
@@ -12,13 +12,21 @@ type ProductCardProps = {
   locale: string;
   categoryName?: string;
   onOpen: (product: Product) => void;
+  layout?: boolean;
+  liveFilter?: boolean;
 };
 
 export const cardVariants = {
-  hidden: { y: 12 },
+  hidden: { y: 12, opacity: 0 },
   show: {
     y: 0,
+    opacity: 1,
     transition: { type: "spring" as const, stiffness: 380, damping: 28 },
+  },
+  exit: {
+    opacity: 0,
+    scale: 0.94,
+    transition: { duration: 0.18, ease: [0.22, 1, 0.36, 1] as const },
   },
 };
 
@@ -28,7 +36,10 @@ export function ProductCard({
   locale,
   categoryName,
   onOpen,
+  layout = false,
+  liveFilter = false,
 }: ProductCardProps) {
+  const reduced = useReducedMotion();
   const price = formatPrice(product.priceCents, currency, locale);
   const energy =
     product.energyKcal != null ? `${product.energyKcal} kcal` : null;
@@ -36,23 +47,43 @@ export function ProductCard({
   return (
     <motion.button
       type="button"
+      layout={layout}
       variants={cardVariants}
+      initial={liveFilter ? "hidden" : false}
+      animate="show"
+      exit={liveFilter ? "exit" : undefined}
       onClick={() => onOpen(product)}
-      whileTap={{ scale: 0.985 }}
+      whileTap={reduced ? undefined : { scale: 0.985 }}
+      whileHover={
+        reduced
+          ? undefined
+          : {
+              y: -2,
+              boxShadow: "0 20px 44px -20px rgba(59,36,22,0.58)",
+            }
+      }
+      transition={{ type: "spring", stiffness: 420, damping: 28 }}
       className="group overflow-hidden rounded-[1.25rem] bg-white text-left shadow-[0_14px_36px_-22px_rgba(59,36,22,0.5)] ring-1 ring-black/5"
     >
       <span
         className={`relative block aspect-square w-full overflow-hidden ${PHOTO_WELL}`}
       >
         {product.imageUrl ? (
-          <Image
-            src={product.imageUrl}
-            alt=""
-            fill
-            sizes="50vw"
-            unoptimized
-            className={PHOTO_FIT}
-          />
+          <motion.span
+            className="absolute inset-0 block"
+            whileHover={reduced ? undefined : { scale: 1.04 }}
+            whileTap={reduced ? undefined : { scale: 1.02 }}
+            transition={{ type: "spring", stiffness: 300, damping: 22 }}
+          >
+            <Image
+              src={product.imageUrl}
+              alt=""
+              fill
+              sizes="50vw"
+              unoptimized
+              className={PHOTO_FIT}
+            />
+          </motion.span>
         ) : (
           <span className="flex h-full w-full items-center justify-center font-display text-4xl font-bold text-cocoa/30">
             {product.name.slice(0, 1)}

@@ -1,9 +1,10 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { useMemo, useState } from "react";
 import { CategoryNav } from "@/components/menu/CategoryNav";
+import { EmptySearchState } from "@/components/menu/EmptySearchState";
 import { MenuFooter } from "@/components/menu/MenuFooter";
 import { GenuaPartner } from "@/components/menu/GenuaPartner";
 import { MenuHero } from "@/components/menu/MenuHero";
@@ -103,26 +104,26 @@ export function MenuView({ menu }: { menu: MenuData }) {
               </div>
               {searchResults.length > 0 ? (
                 <motion.div
+                  layout
                   className="grid grid-cols-2 gap-2 sm:gap-2.5"
-                  variants={gridVariants}
-                  initial="hidden"
-                  animate="show"
                 >
-                  {searchResults.map(({ product, categoryName }) => (
-                    <ProductCard
-                      key={product.id}
-                      product={product}
-                      categoryName={categoryName}
-                      currency={menu.tenant.currency}
-                      locale={menu.tenant.locale}
-                      onOpen={setSelected}
-                    />
-                  ))}
+                  <AnimatePresence mode="popLayout">
+                    {searchResults.map(({ product, categoryName }) => (
+                      <ProductCard
+                        key={product.id}
+                        product={product}
+                        categoryName={categoryName}
+                        currency={menu.tenant.currency}
+                        locale={menu.tenant.locale}
+                        onOpen={setSelected}
+                        layout
+                        liveFilter
+                      />
+                    ))}
+                  </AnimatePresence>
                 </motion.div>
               ) : (
-                <p className="rounded-[1.25rem] bg-white/80 px-4 py-5 text-center text-sm text-mute ring-1 ring-black/5">
-                  Aradığın ürün bulunamadı. Kategorilere göz atmayı dene.
-                </p>
+                <EmptySearchState />
               )}
             </motion.section>
           ) : active ? (

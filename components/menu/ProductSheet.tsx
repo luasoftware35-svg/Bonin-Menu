@@ -1,9 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useEffect } from "react";
 import { allergenText, formatPrice } from "@/lib/format";
+import { springSoft } from "@/lib/motion";
 import { PHOTO_FIT, PHOTO_WELL } from "@/lib/photo";
 import type { Product } from "@/lib/types";
 
@@ -14,12 +15,31 @@ type ProductSheetProps = {
   onClose: () => void;
 };
 
+const badgeContainer = {
+  hidden: {},
+  show: {
+    transition: { staggerChildren: 0.04, delayChildren: 0.12 },
+  },
+};
+
+const badgeItem = {
+  hidden: { opacity: 0, y: 8, scale: 0.9 },
+  show: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { type: "spring" as const, stiffness: 420, damping: 24 },
+  },
+};
+
 export function ProductSheet({
   product,
   currency,
   locale,
   onClose,
 }: ProductSheetProps) {
+  const reduced = useReducedMotion();
+
   useEffect(() => {
     if (!product) return;
     const onKey = (event: KeyboardEvent) => {
@@ -60,7 +80,7 @@ export function ProductSheet({
             initial={{ y: 72, scale: 0.96 }}
             animate={{ y: 0, scale: 1 }}
             exit={{ y: 48, scale: 0.98 }}
-            transition={{ type: "spring", stiffness: 320, damping: 30 }}
+            transition={reduced ? { duration: 0 } : springSoft}
             className="relative max-h-[92dvh] w-full max-w-menu overflow-y-auto overscroll-contain rounded-t-[1.75rem] bg-cream pb-[max(1.5rem,env(safe-area-inset-bottom))] shadow-2xl sm:max-h-[90dvh] sm:rounded-[1.75rem]"
           >
             <div
@@ -90,16 +110,32 @@ export function ProductSheet({
               <div className="flex items-start justify-between gap-3">
                 <motion.h2
                   id="product-title"
-                  initial={{ y: 12, opacity: 0 }}
+                  initial={reduced ? false : { y: 12, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
+                  transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
                   className="text-[1.35rem] font-semibold leading-tight sm:text-2xl"
                 >
                   {product.name}
                 </motion.h2>
                 {price ? (
-                  <p className="shrink-0 font-display text-2xl font-bold tabular-nums text-cocoa">
+                  <motion.p
+                    key={product.id}
+                    initial={reduced ? false : { scale: 0.88, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={
+                      reduced
+                        ? { duration: 0 }
+                        : {
+                            type: "spring",
+                            stiffness: 420,
+                            damping: 22,
+                            delay: 0.08,
+                          }
+                    }
+                    className="shrink-0 font-display text-2xl font-bold tabular-nums text-cocoa"
+                  >
                     {price}
-                  </p>
+                  </motion.p>
                 ) : null}
               </div>
               <p className="mt-1 text-sm text-mute">
@@ -113,16 +149,22 @@ export function ProductSheet({
                 </p>
               ) : null}
               {product.allergens.length ? (
-                <div className="mt-4 flex flex-wrap gap-1.5">
+                <motion.div
+                  className="mt-4 flex flex-wrap gap-1.5"
+                  variants={badgeContainer}
+                  initial="hidden"
+                  animate="show"
+                >
                   {product.allergens.map((code) => (
-                    <span
+                    <motion.span
                       key={code}
+                      variants={badgeItem}
                       className="rounded-full bg-cocoa/10 px-2.5 py-1 text-[11px] font-medium text-cocoa"
                     >
                       {allergenText(code)}
-                    </span>
+                    </motion.span>
                   ))}
-                </div>
+                </motion.div>
               ) : null}
               <button
                 type="button"

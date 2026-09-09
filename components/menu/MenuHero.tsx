@@ -1,42 +1,81 @@
 "use client";
 
+import { motion, useReducedMotion } from "framer-motion";
 import { BrandLogo } from "@/components/menu/BrandLogo";
+import { fadeUp } from "@/lib/motion";
 import { instagramHandle } from "@/lib/social";
 import type { Tenant } from "@/lib/types";
 
-export function MenuHero({ tenant }: { tenant: Tenant; ticker?: string[] }) {
+export function MenuHero({ tenant, ticker = [] }: { tenant: Tenant; ticker?: string[] }) {
+  const reduced = useReducedMotion();
+  const tickerItems = ticker.length > 0 ? [...ticker, ...ticker] : [];
+
   return (
     <header className="relative px-5 pb-4 pt-[max(0.9rem,env(safe-area-inset-top))] text-center sm:px-6 sm:pb-5 sm:pt-5">
       <div
         aria-hidden
         className="pointer-events-none absolute inset-x-0 top-0 mx-auto h-36 max-w-xs bg-[radial-gradient(ellipse_at_center,rgba(160,79,23,0.12),transparent_70%)]"
       />
-      <div className="relative mx-auto w-[8.5rem] sm:w-[9.75rem]">
+      <motion.div
+        className="relative mx-auto w-[8.5rem] sm:w-[9.75rem]"
+        initial={
+          reduced
+            ? false
+            : { opacity: 0, y: 16, scale: 0.94 }
+        }
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={
+          reduced
+            ? { duration: 0 }
+            : { duration: 0.55, ease: [0.22, 1, 0.36, 1] }
+        }
+      >
         <BrandLogo priority />
-      </div>
+      </motion.div>
       {tenant.tagline ? (
-        <p className="mt-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-cocoa">
+        <motion.p
+          className="mt-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-cocoa"
+          {...fadeUp(!!reduced, 0.08)}
+        >
           {tenant.tagline}
-        </p>
+        </motion.p>
       ) : null}
       {tenant.slogan ? (
-        <p className="mt-1.5 font-display text-[15px] font-medium leading-snug text-ink sm:text-base">
+        <motion.p
+          className="mt-1.5 font-display text-[15px] font-medium leading-snug text-ink sm:text-base"
+          {...fadeUp(!!reduced, 0.14)}
+        >
           {tenant.slogan}
-        </p>
+        </motion.p>
       ) : null}
-      <div
+      {tickerItems.length > 0 ? (
+        <motion.div
+          className="marquee mt-3 sm:mt-4"
+          aria-hidden
+          {...fadeUp(!!reduced, 0.2)}
+        >
+          <div className="marquee-track text-[10px] font-semibold uppercase tracking-[0.18em] text-cocoa/55">
+            {tickerItems.map((name, index) => (
+              <span key={`${name}-${index}`}>{name}</span>
+            ))}
+          </div>
+        </motion.div>
+      ) : null}
+      <motion.div
         aria-hidden
         className="mx-auto mt-4 h-px w-10 bg-cocoa/25 sm:mt-5 sm:w-12"
+        {...fadeUp(!!reduced, 0.22)}
       />
       {tenant.instagram ? (
-        <a
+        <motion.a
           href={tenant.instagram}
           target="_blank"
           rel="noreferrer"
           className="mt-3 inline-flex min-h-10 items-center justify-center text-[11px] font-semibold uppercase tracking-[0.16em] text-cocoa/90 transition hover:text-cocoa"
+          {...fadeUp(!!reduced, 0.26)}
         >
           {instagramHandle(tenant.instagram)}
-        </a>
+        </motion.a>
       ) : null}
       <h1 className="sr-only">
         {tenant.name} {tenant.tagline}
