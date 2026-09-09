@@ -20,7 +20,7 @@ type FeaturedCarouselProps = {
   onOpen: (product: Product) => void;
 };
 
-const ROTATE_MS = 3800;
+const ROTATE_MS = 4000;
 
 export function FeaturedCarousel({
   items,
@@ -70,29 +70,34 @@ export function FeaturedCarousel({
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
-      <div className="mb-2 flex items-center justify-between px-0.5">
+      <div className="mb-2.5 flex items-center justify-between px-0.5">
         <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-cocoa">
           Günün önerileri
         </p>
-        <p className="text-[10px] tabular-nums text-mute">
-          {index + 1}/{items.length}
-        </p>
+        {items.length > 1 ? (
+          <p className="text-[10px] tabular-nums text-mute">
+            {index + 1} / {items.length}
+          </p>
+        ) : null}
       </div>
 
-      <div className="relative min-h-[5.25rem] overflow-hidden sm:min-h-[5.75rem]">
+      <div className="grid">
         <AnimatePresence mode="wait" initial={false}>
           <motion.button
             key={current.product.id}
             type="button"
             onClick={() => onOpen(current.product)}
-            initial={reduced ? { opacity: 0 } : { opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={reduced ? { opacity: 0 } : { opacity: 0, x: -20 }}
-            transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
-            className="group absolute inset-x-0 top-0 flex w-full items-center gap-3 overflow-hidden rounded-[1.35rem] bg-white p-2.5 text-left shadow-[0_12px_32px_-20px_rgba(59,36,22,0.45)] ring-1 ring-black/5 transition-transform duration-200 active:scale-[0.995] sm:p-3"
+            initial={reduced ? false : { opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+            className="col-start-1 row-start-1 flex w-full items-center gap-3 overflow-hidden rounded-[1.25rem] bg-white p-2.5 text-left ring-1 ring-black/5 transition-transform duration-150 active:scale-[0.99] sm:gap-3.5 sm:p-3"
+            style={{
+              boxShadow: "0 14px 36px -22px rgba(59,36,22,0.42)",
+            }}
           >
             <span
-              className={`relative h-[4.5rem] w-[4.5rem] shrink-0 overflow-hidden rounded-[1rem] ${PHOTO_WELL} sm:h-20 sm:w-20`}
+              className={`relative h-16 w-16 shrink-0 overflow-hidden rounded-[0.9rem] ${PHOTO_WELL} sm:h-[4.5rem] sm:w-[4.5rem]`}
             >
               {current.product.imageUrl ? (
                 photoLayoutId ? (
@@ -105,8 +110,8 @@ export function FeaturedCarousel({
                       src={current.product.imageUrl}
                       alt=""
                       fill
-                      sizes="80px"
-                      className={`${PHOTO_FIT} transition-transform duration-150 group-hover:scale-[1.04]`}
+                      sizes="72px"
+                      className={PHOTO_FIT}
                     />
                   </motion.div>
                 ) : (
@@ -114,22 +119,27 @@ export function FeaturedCarousel({
                     src={current.product.imageUrl}
                     alt=""
                     fill
-                    sizes="80px"
-                    className={`${PHOTO_FIT} transition-transform duration-150 group-hover:scale-[1.04]`}
+                    sizes="72px"
+                    className={PHOTO_FIT}
                   />
                 )
               ) : null}
             </span>
-            <span className="min-w-0 flex-1">
-              <span className="block truncate text-[14px] font-semibold text-ink">
+
+            <span className="min-w-0 flex-1 text-left">
+              <span className="inline-flex rounded-full bg-cocoa/10 px-2 py-0.5 text-[9px] font-bold uppercase tracking-[0.12em] text-cocoa">
+                Öneri
+              </span>
+              <span className="mt-1.5 block truncate text-[14px] font-semibold leading-snug text-ink">
                 {current.product.name}
               </span>
               <span className="mt-0.5 block text-[11px] text-mute">
                 {current.categoryName}
               </span>
             </span>
+
             {price ? (
-              <span className="shrink-0 rounded-full bg-cocoa px-3 py-1.5 font-display text-[13px] font-extrabold tabular-nums text-cream">
+              <span className="shrink-0 rounded-full bg-cocoa px-2.5 py-1 font-display text-[12px] font-extrabold tabular-nums leading-none text-cream sm:text-[13px]">
                 {price}
               </span>
             ) : null}
@@ -148,8 +158,8 @@ export function FeaturedCarousel({
               onClick={() => setIndex(dotIndex)}
               className={`h-1.5 rounded-full transition-all duration-200 ${
                 dotIndex === index
-                  ? "w-5 bg-cocoa"
-                  : "w-1.5 bg-cocoa/25 hover:bg-cocoa/45"
+                  ? "w-4 bg-cocoa"
+                  : "w-1.5 bg-cocoa/20 hover:bg-cocoa/40"
               }`}
             />
           ))}
