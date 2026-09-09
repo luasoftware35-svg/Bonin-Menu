@@ -1,6 +1,7 @@
 "use client";
 
 import { BrandLogo } from "@/components/menu/BrandLogo";
+import { instagramHandle } from "@/lib/social";
 import type { Tenant } from "@/lib/types";
 
 export function MenuHero({ tenant }: { tenant: Tenant; ticker?: string[] }) {
@@ -27,6 +28,16 @@ export function MenuHero({ tenant }: { tenant: Tenant; ticker?: string[] }) {
         aria-hidden
         className="mx-auto mt-4 h-px w-10 bg-cocoa/25 sm:mt-5 sm:w-12"
       />
+      {tenant.instagram ? (
+        <a
+          href={tenant.instagram}
+          target="_blank"
+          rel="noreferrer"
+          className="mt-3 inline-flex min-h-10 items-center justify-center text-[11px] font-semibold uppercase tracking-[0.16em] text-cocoa/90 transition hover:text-cocoa"
+        >
+          {instagramHandle(tenant.instagram)}
+        </a>
+      ) : null}
       <h1 className="sr-only">
         {tenant.name} {tenant.tagline}
       </h1>

@@ -1,14 +1,6 @@
 import { ALLERGEN_LABELS } from "@/lib/format";
+import { instagramHandle } from "@/lib/social";
 import type { Tenant } from "@/lib/types";
-
-function instagramHandle(url: string) {
-  try {
-    const path = new URL(url).pathname.replace(/\//g, "");
-    return path ? `@${path}` : "Instagram";
-  } catch {
-    return "Instagram";
-  }
-}
 
 export function MenuFooter({ tenant }: { tenant: Tenant }) {
   const instagram = tenant.instagram

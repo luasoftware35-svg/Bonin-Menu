@@ -61,7 +61,9 @@ export async function getMenuBySlug(slug: string): Promise<MenuData | null> {
     logoUrl: tenantRow.logo_url,
     address: tenantRow.address ?? "",
     hours: tenantRow.hours ?? "",
-    instagram: tenantRow.instagram,
+    instagram:
+      tenantRow.instagram ??
+      (slug === boninMenu.tenant.slug ? boninMenu.tenant.instagram : null),
     mapsUrl: tenantRow.maps_url,
     currency: tenantRow.currency ?? "EUR",
     locale,
