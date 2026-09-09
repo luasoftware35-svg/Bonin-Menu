@@ -14,7 +14,7 @@ export function BrandLogo({ priority = false, className = "" }: BrandLogoProps) 
       height={463}
       decoding="async"
       fetchPriority={priority ? "high" : "auto"}
-      className={`mx-auto block h-auto w-full max-w-full object-contain object-center ${className}`}
+      className={`mx-auto block h-auto w-full max-w-full bg-transparent object-contain object-center ${className}`}
     />
   );
 }

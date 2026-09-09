@@ -12,6 +12,16 @@ export const springSoft = {
   damping: 30,
 };
 
+export const overlayFade = {
+  duration: 0.15,
+  ease: easeOut,
+};
+
+export const sheetSlide = {
+  duration: 0.22,
+  ease: easeOut,
+};
+
 export function fadeUp(reduced: boolean | null, delay = 0) {
   if (reduced) {
     return {

@@ -1,6 +1,5 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import { AnimatePresence, motion } from "framer-motion";
 import { useMemo, useState } from "react";
 import { CategoryNav } from "@/components/menu/CategoryNav";
@@ -10,19 +9,14 @@ import { GenuaPartner } from "@/components/menu/GenuaPartner";
 import { MenuHero } from "@/components/menu/MenuHero";
 import { MenuSearch } from "@/components/menu/MenuSearch";
 import { ProductCard } from "@/components/menu/ProductCard";
+import { ProductSheet } from "@/components/menu/ProductSheet";
 import { normalizeSearchQuery, searchMenuProducts } from "@/lib/search";
 import type { MenuData, Product } from "@/lib/types";
-
-const ProductSheet = dynamic(
-  () =>
-    import("@/components/menu/ProductSheet").then((mod) => mod.ProductSheet),
-  { ssr: false },
-);
 
 const gridVariants = {
   hidden: {},
   show: {
-    transition: { staggerChildren: 0.055, delayChildren: 0.04 },
+    transition: { staggerChildren: 0.03, delayChildren: 0.02 },
   },
 };
 

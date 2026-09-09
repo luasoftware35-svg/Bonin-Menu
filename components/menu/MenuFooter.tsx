@@ -69,17 +69,28 @@ export function MenuFooter({ tenant }: { tenant: Tenant }) {
       </div>
 
       <div className="mt-5 border-t border-line/70 pt-5">
-        <p>Alkol veya domuz kaynaklı bileşen kullanılmamaktadır.</p>
-        <p className="mt-3 font-medium text-ink/70">Alerjen kodları</p>
-        <p className="mt-1">
+        <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-cocoa">
+          Ürün güvenliği
+        </p>
+        <p className="mt-1.5 text-ink/75">
+          Menümüzde alkol ve domuz türevi kullanılmaz; tüm ürünler bu ilkeye
+          uygun hazırlanır.
+        </p>
+        <p className="mt-4 text-[10px] font-semibold uppercase tracking-[0.14em] text-cocoa">
+          Alerjen bilgilendirme
+        </p>
+        <p className="mt-1.5 text-ink/75">
           {Object.entries(ALLERGEN_LABELS)
-            .map(([code, label]) => `${code} ${label}`)
+            .map(([code, label]) => `${code}: ${label}`)
             .join(" · ")}
         </p>
-        <p className="mt-3">
-          * işaretli kodlar, tarifte açık yazılmasa da ürün tipi gereği içerebilir.
+        <p className="mt-2 text-[11px] text-ink/65">
+          * işaretli alerjenler, tarifte belirtilmese dahi ürün yapısı
+          gereği bulunabilir.
         </p>
-        <p className="mt-4 text-[11px]">Menü güncelleme: 04.09.2026</p>
+        <p className="mt-4 text-[11px] text-ink/55">
+          Menü güncelleme: Eylül 2026
+        </p>
       </div>
     </footer>
   );

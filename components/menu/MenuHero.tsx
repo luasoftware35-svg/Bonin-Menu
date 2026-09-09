@@ -12,10 +12,6 @@ export function MenuHero({ tenant, ticker = [] }: { tenant: Tenant; ticker?: str
 
   return (
     <header className="relative px-5 pb-4 pt-[max(0.9rem,env(safe-area-inset-top))] text-center sm:px-6 sm:pb-5 sm:pt-5">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 mx-auto h-36 max-w-xs bg-[radial-gradient(ellipse_at_center,rgba(160,79,23,0.12),transparent_70%)]"
-      />
       <motion.div
         className="relative mx-auto w-[8.5rem] sm:w-[9.75rem]"
         initial={
