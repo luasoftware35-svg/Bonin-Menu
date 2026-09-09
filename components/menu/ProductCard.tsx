@@ -3,7 +3,9 @@
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import { formatPrice } from "@/lib/format";
+import { priceStamp } from "@/lib/motion";
 import { PHOTO_FIT, PHOTO_WELL } from "@/lib/photo";
+import { productPhotoLayoutId } from "@/lib/product-photo";
 import type { Product } from "@/lib/types";
 
 type ProductCardProps = {
@@ -14,6 +16,7 @@ type ProductCardProps = {
   onOpen: (product: Product) => void;
   layout?: boolean;
   liveFilter?: boolean;
+  sharedPhoto?: boolean;
 };
 
 export const cardVariants = {
@@ -37,11 +40,14 @@ export function ProductCard({
   onOpen,
   layout = false,
   liveFilter = false,
+  sharedPhoto = true,
 }: ProductCardProps) {
   const reduced = useReducedMotion();
   const price = formatPrice(product.priceCents, currency, locale);
   const energy =
     product.energyKcal != null ? `${product.energyKcal} kcal` : null;
+  const photoLayoutId =
+    sharedPhoto && !reduced ? productPhotoLayoutId(product.id) : undefined;
 
   return (
     <motion.button
@@ -60,14 +66,20 @@ export function ProductCard({
         className={`relative block aspect-square w-full overflow-hidden ${PHOTO_WELL}`}
       >
         {product.imageUrl ? (
-          <Image
-            src={product.imageUrl}
-            alt=""
-            fill
-            sizes="50vw"
-            unoptimized
-            className={`${PHOTO_FIT} transition-transform duration-200 group-hover:scale-[1.03] group-active:scale-[1.01]`}
-          />
+          <motion.div
+            layoutId={photoLayoutId}
+            className="absolute inset-0"
+            transition={{ type: "spring", stiffness: 340, damping: 32 }}
+          >
+            <Image
+              src={product.imageUrl}
+              alt=""
+              fill
+              sizes="50vw"
+              unoptimized
+              className={`${PHOTO_FIT} transition-transform duration-200 group-hover:scale-[1.03] group-active:scale-[1.01]`}
+            />
+          </motion.div>
         ) : (
           <span className="flex h-full w-full items-center justify-center font-display text-4xl font-bold text-cocoa/30">
             {product.name.slice(0, 1)}
@@ -91,9 +103,20 @@ export function ProductCard({
           ) : null}
         </span>
         {price ? (
-          <span className="shrink-0 rounded-full bg-cocoa px-2.5 py-1 font-display text-[12px] font-extrabold tabular-nums leading-none text-cream sm:text-[13px]">
-            {price}
-          </span>
+          reduced ? (
+            <span className="shrink-0 rounded-full bg-cocoa px-2.5 py-1 font-display text-[12px] font-extrabold tabular-nums leading-none text-cream sm:text-[13px]">
+              {price}
+            </span>
+          ) : (
+            <motion.span
+              variants={priceStamp}
+              initial="hidden"
+              animate="show"
+              className="shrink-0 rounded-full bg-cocoa px-2.5 py-1 font-display text-[12px] font-extrabold tabular-nums leading-none text-cream sm:text-[13px]"
+            >
+              {price}
+            </motion.span>
+          )
         ) : null}
       </span>
     </motion.button>

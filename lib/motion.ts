@@ -22,6 +22,37 @@ export const sheetSlide = {
   ease: easeOut,
 };
 
+export const categorySlideVariants = {
+  enter: (direction: number) => ({
+    x: direction > 0 ? 28 : -28,
+    opacity: 0,
+  }),
+  center: {
+    x: 0,
+    opacity: 1,
+    transition: { duration: 0.24, ease: easeOut },
+  },
+  exit: (direction: number) => ({
+    x: direction > 0 ? -28 : 28,
+    opacity: 0,
+    transition: { duration: 0.18, ease: easeOut },
+  }),
+};
+
+export const priceStamp = {
+  hidden: { scale: 1.16, opacity: 0 },
+  show: {
+    scale: 1,
+    opacity: 1,
+    transition: {
+      type: "spring" as const,
+      stiffness: 520,
+      damping: 20,
+      delay: 0.1,
+    },
+  },
+};
+
 export function fadeUp(reduced: boolean | null, delay = 0) {
   if (reduced) {
     return {

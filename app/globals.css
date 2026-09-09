@@ -173,6 +173,69 @@ body {
   }
 }
 
+.steam-rise {
+  position: absolute;
+  bottom: 0;
+  width: 2px;
+  height: 18px;
+  border-radius: 999px;
+  background: linear-gradient(
+    to top,
+    rgba(160, 79, 23, 0.28),
+    rgba(160, 79, 23, 0)
+  );
+  animation: steam-rise 3.2s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+
+.steam-rise-a {
+  left: 42%;
+  animation-delay: 0s;
+}
+
+.steam-rise-b {
+  left: 50%;
+  height: 22px;
+  animation-delay: 0.9s;
+}
+
+.steam-rise-c {
+  left: 58%;
+  animation-delay: 1.7s;
+}
+
+@keyframes steam-rise {
+  0% {
+    opacity: 0;
+    transform: translateY(0) scaleX(1);
+  }
+  18% {
+    opacity: 0.45;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-26px) scaleX(1.35);
+  }
+}
+
+.featured-pick-glow {
+  animation: featured-glow 2.8s ease-in-out infinite;
+}
+
+@keyframes featured-glow {
+  0%,
+  100% {
+    box-shadow:
+      0 14px 36px -22px rgba(59, 36, 22, 0.45),
+      0 0 0 0 rgba(160, 79, 23, 0.12);
+  }
+  50% {
+    box-shadow:
+      0 18px 40px -18px rgba(59, 36, 22, 0.5),
+      0 0 0 2px rgba(160, 79, 23, 0.14);
+  }
+}
+
 .scrollbar-none {
   scrollbar-width: none;
   -ms-overflow-style: none;

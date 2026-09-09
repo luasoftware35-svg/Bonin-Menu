@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { allergenText, formatPrice } from "@/lib/format";
 import { overlayFade, sheetSlide } from "@/lib/motion";
 import { PHOTO_FIT, PHOTO_WELL } from "@/lib/photo";
+import { productPhotoLayoutId } from "@/lib/product-photo";
 import type { Product } from "@/lib/types";
 
 type ProductSheetProps = {
@@ -22,6 +23,7 @@ export function ProductSheet({
   onClose,
 }: ProductSheetProps) {
   const reduced = useReducedMotion();
+  const sharedPhoto = Boolean(product && !reduced);
 
   useEffect(() => {
     if (!product) return;
@@ -41,7 +43,7 @@ export function ProductSheet({
     : null;
 
   return (
-    <AnimatePresence mode="wait">
+    <AnimatePresence>
       {product ? (
         <motion.div
           key="product-sheet"
@@ -61,7 +63,9 @@ export function ProductSheet({
             role="dialog"
             aria-modal="true"
             aria-labelledby="product-title"
-            initial={reduced ? false : { y: 28, opacity: 0.98 }}
+            initial={
+              reduced || sharedPhoto ? false : { y: 28, opacity: 0.98 }
+            }
             animate={{ y: 0, opacity: 1 }}
             exit={reduced ? { opacity: 0 } : { y: 16, opacity: 0 }}
             transition={reduced ? { duration: 0 } : sheetSlide}
@@ -71,15 +75,25 @@ export function ProductSheet({
               className={`relative aspect-square max-h-[42vh] w-full overflow-hidden ${PHOTO_WELL} sm:max-h-[46vh]`}
             >
               {product.imageUrl ? (
-                <Image
-                  src={product.imageUrl}
-                  alt={product.name}
-                  fill
-                  sizes="640px"
-                  unoptimized
-                  className={PHOTO_FIT}
-                  priority
-                />
+                <motion.div
+                  layoutId={
+                    sharedPhoto
+                      ? productPhotoLayoutId(product.id)
+                      : undefined
+                  }
+                  className="absolute inset-0"
+                  transition={{ type: "spring", stiffness: 340, damping: 32 }}
+                >
+                  <Image
+                    src={product.imageUrl}
+                    alt={product.name}
+                    fill
+                    sizes="640px"
+                    unoptimized
+                    className={PHOTO_FIT}
+                    priority
+                  />
+                </motion.div>
               ) : null}
             </div>
             <div className="relative px-4 pt-4 sm:px-5">
