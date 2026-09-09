@@ -16,6 +16,7 @@ type FeaturedCarouselProps = {
   locale: string;
   selectedId: string | null;
   photoSource: "featured" | "grid" | null;
+  enableSharedPhoto?: boolean;
   onOpen: (product: Product) => void;
 };
 
@@ -27,6 +28,7 @@ export function FeaturedCarousel({
   locale,
   selectedId,
   photoSource,
+  enableSharedPhoto = false,
   onOpen,
 }: FeaturedCarouselProps) {
   const reduced = useReducedMotion();
@@ -52,8 +54,9 @@ export function FeaturedCarousel({
 
   const price = formatPrice(current.product.priceCents, currency, locale);
   const sharedPhoto =
-    !selectedId ||
-    (selectedId === current.product.id && photoSource === "featured");
+    enableSharedPhoto &&
+    (!selectedId ||
+      (selectedId === current.product.id && photoSource === "featured"));
   const photoLayoutId = sharedPhoto
     ? productPhotoLayoutId(current.product.id)
     : undefined;
@@ -86,27 +89,36 @@ export function FeaturedCarousel({
             initial={reduced ? false : { opacity: 0, x: 24 }}
             animate={{ opacity: 1, x: 0 }}
             exit={reduced ? { opacity: 0 } : { opacity: 0, x: -24 }}
-            transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
             className="featured-pick-glow group flex w-full items-center gap-3 overflow-hidden rounded-[1.35rem] bg-white p-2.5 text-left ring-1 ring-cocoa/15 transition-transform duration-200 active:scale-[0.995] sm:p-3"
           >
             <span
               className={`relative h-[4.5rem] w-[4.5rem] shrink-0 overflow-hidden rounded-[1rem] ${PHOTO_WELL} sm:h-20 sm:w-20`}
             >
               {current.product.imageUrl ? (
-                <motion.div
-                  layoutId={photoLayoutId}
-                  className="absolute inset-0"
-                  transition={{ type: "spring", stiffness: 340, damping: 32 }}
-                >
+                photoLayoutId ? (
+                  <motion.div
+                    layoutId={photoLayoutId}
+                    className="absolute inset-0"
+                    transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+                  >
+                    <Image
+                      src={current.product.imageUrl}
+                      alt=""
+                      fill
+                      sizes="80px"
+                      className={`${PHOTO_FIT} transition-transform duration-150 group-hover:scale-[1.04]`}
+                    />
+                  </motion.div>
+                ) : (
                   <Image
                     src={current.product.imageUrl}
                     alt=""
                     fill
                     sizes="80px"
-                    unoptimized
-                    className={`${PHOTO_FIT} transition-transform duration-200 group-hover:scale-[1.04]`}
+                    className={`${PHOTO_FIT} transition-transform duration-150 group-hover:scale-[1.04]`}
                   />
-                </motion.div>
+                )
               ) : null}
             </span>
             <span className="min-w-0 flex-1">

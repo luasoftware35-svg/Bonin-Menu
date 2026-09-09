@@ -14,6 +14,7 @@ type ProductSheetProps = {
   currency: string;
   locale: string;
   onClose: () => void;
+  sharedPhoto?: boolean;
 };
 
 export function ProductSheet({
@@ -21,9 +22,10 @@ export function ProductSheet({
   currency,
   locale,
   onClose,
+  sharedPhoto = false,
 }: ProductSheetProps) {
   const reduced = useReducedMotion();
-  const sharedPhoto = Boolean(product && !reduced);
+  const useSharedPhoto = Boolean(product && sharedPhoto && !reduced);
 
   useEffect(() => {
     if (!product) return;
@@ -64,36 +66,42 @@ export function ProductSheet({
             aria-modal="true"
             aria-labelledby="product-title"
             initial={
-              reduced || sharedPhoto ? false : { y: 28, opacity: 0.98 }
+              reduced || useSharedPhoto ? false : { y: 28, opacity: 0.98 }
             }
             animate={{ y: 0, opacity: 1 }}
             exit={reduced ? { opacity: 0 } : { y: 16, opacity: 0 }}
             transition={reduced ? { duration: 0 } : sheetSlide}
-            className="relative max-h-[92dvh] w-full max-w-menu overflow-y-auto overscroll-contain rounded-t-[1.75rem] bg-cream pb-[max(1.5rem,env(safe-area-inset-bottom))] shadow-2xl will-change-transform sm:max-h-[90dvh] sm:rounded-[1.75rem]"
+            className="relative max-h-[92dvh] w-full max-w-menu overflow-y-auto overscroll-contain rounded-t-[1.75rem] bg-cream pb-[max(1.5rem,env(safe-area-inset-bottom))] shadow-2xl sm:max-h-[90dvh] sm:rounded-[1.75rem]"
           >
             <div
               className={`relative aspect-square max-h-[42vh] w-full overflow-hidden ${PHOTO_WELL} sm:max-h-[46vh]`}
             >
               {product.imageUrl ? (
-                <motion.div
-                  layoutId={
-                    sharedPhoto
-                      ? productPhotoLayoutId(product.id)
-                      : undefined
-                  }
-                  className="absolute inset-0"
-                  transition={{ type: "spring", stiffness: 340, damping: 32 }}
-                >
+                useSharedPhoto ? (
+                  <motion.div
+                    layoutId={productPhotoLayoutId(product.id)}
+                    className="absolute inset-0"
+                    transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+                  >
+                    <Image
+                      src={product.imageUrl}
+                      alt={product.name}
+                      fill
+                      sizes="(max-width: 640px) 100vw, 480px"
+                      className={PHOTO_FIT}
+                      priority
+                    />
+                  </motion.div>
+                ) : (
                   <Image
                     src={product.imageUrl}
                     alt={product.name}
                     fill
-                    sizes="640px"
-                    unoptimized
+                    sizes="(max-width: 640px) 100vw, 480px"
                     className={PHOTO_FIT}
                     priority
                   />
-                </motion.div>
+                )
               ) : null}
             </div>
             <div className="relative px-4 pt-4 sm:px-5">

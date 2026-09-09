@@ -24,18 +24,18 @@ export const sheetSlide = {
 
 export const categorySlideVariants = {
   enter: (direction: number) => ({
-    x: direction > 0 ? 28 : -28,
+    x: direction > 0 ? 14 : -14,
     opacity: 0,
   }),
   center: {
     x: 0,
     opacity: 1,
-    transition: { duration: 0.24, ease: easeOut },
+    transition: { duration: 0.16, ease: easeOut },
   },
   exit: (direction: number) => ({
-    x: direction > 0 ? -28 : 28,
+    x: direction > 0 ? -10 : 10,
     opacity: 0,
-    transition: { duration: 0.18, ease: easeOut },
+    transition: { duration: 0.1, ease: easeOut },
   }),
 };
 

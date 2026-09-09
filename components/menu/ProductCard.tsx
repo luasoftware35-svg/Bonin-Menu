@@ -3,7 +3,6 @@
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import { formatPrice } from "@/lib/format";
-import { priceStamp } from "@/lib/motion";
 import { PHOTO_FIT, PHOTO_WELL } from "@/lib/photo";
 import { productPhotoLayoutId } from "@/lib/product-photo";
 import type { Product } from "@/lib/types";
@@ -20,15 +19,15 @@ type ProductCardProps = {
 };
 
 export const cardVariants = {
-  hidden: { y: 8, opacity: 0 },
+  hidden: { y: 6, opacity: 0 },
   show: {
     y: 0,
     opacity: 1,
-    transition: { duration: 0.22, ease: [0.22, 1, 0.36, 1] as const },
+    transition: { duration: 0.16, ease: [0.22, 1, 0.36, 1] as const },
   },
   exit: {
     opacity: 0,
-    transition: { duration: 0.12, ease: [0.22, 1, 0.36, 1] as const },
+    transition: { duration: 0.1, ease: [0.22, 1, 0.36, 1] as const },
   },
 };
 
@@ -59,27 +58,36 @@ export function ProductCard({
       exit={liveFilter ? "exit" : undefined}
       onClick={() => onOpen(product)}
       whileTap={reduced ? undefined : { scale: 0.99 }}
-      transition={{ duration: 0.12 }}
-      className="group overflow-hidden rounded-[1.25rem] bg-white text-left shadow-[0_14px_36px_-22px_rgba(59,36,22,0.5)] ring-1 ring-black/5 transition-[box-shadow,transform] duration-200 hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-20px_rgba(59,36,22,0.55)] active:scale-[0.99]"
+      transition={{ duration: 0.1 }}
+      className="group overflow-hidden rounded-[1.25rem] bg-white text-left shadow-[0_14px_36px_-22px_rgba(59,36,22,0.5)] ring-1 ring-black/5 transition-[box-shadow,transform] duration-150 hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-20px_rgba(59,36,22,0.55)] active:scale-[0.99]"
     >
       <span
         className={`relative block aspect-square w-full overflow-hidden ${PHOTO_WELL}`}
       >
         {product.imageUrl ? (
-          <motion.div
-            layoutId={photoLayoutId}
-            className="absolute inset-0"
-            transition={{ type: "spring", stiffness: 340, damping: 32 }}
-          >
+          photoLayoutId ? (
+            <motion.div
+              layoutId={photoLayoutId}
+              className="absolute inset-0"
+              transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <Image
+                src={product.imageUrl}
+                alt=""
+                fill
+                sizes="(max-width: 640px) 45vw, 240px"
+                className={`${PHOTO_FIT} transition-transform duration-150 group-hover:scale-[1.03] group-active:scale-[1.01]`}
+              />
+            </motion.div>
+          ) : (
             <Image
               src={product.imageUrl}
               alt=""
               fill
-              sizes="50vw"
-              unoptimized
-              className={`${PHOTO_FIT} transition-transform duration-200 group-hover:scale-[1.03] group-active:scale-[1.01]`}
+              sizes="(max-width: 640px) 45vw, 240px"
+              className={`${PHOTO_FIT} transition-transform duration-150 group-hover:scale-[1.03] group-active:scale-[1.01]`}
             />
-          </motion.div>
+          )
         ) : (
           <span className="flex h-full w-full items-center justify-center font-display text-4xl font-bold text-cocoa/30">
             {product.name.slice(0, 1)}
@@ -103,20 +111,9 @@ export function ProductCard({
           ) : null}
         </span>
         {price ? (
-          reduced ? (
-            <span className="shrink-0 rounded-full bg-cocoa px-2.5 py-1 font-display text-[12px] font-extrabold tabular-nums leading-none text-cream sm:text-[13px]">
-              {price}
-            </span>
-          ) : (
-            <motion.span
-              variants={priceStamp}
-              initial="hidden"
-              animate="show"
-              className="shrink-0 rounded-full bg-cocoa px-2.5 py-1 font-display text-[12px] font-extrabold tabular-nums leading-none text-cream sm:text-[13px]"
-            >
-              {price}
-            </motion.span>
-          )
+          <span className="shrink-0 rounded-full bg-cocoa px-2.5 py-1 font-display text-[12px] font-extrabold tabular-nums leading-none text-cream sm:text-[13px]">
+            {price}
+          </span>
         ) : null}
       </span>
     </motion.button>

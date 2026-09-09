@@ -15,13 +15,14 @@ import { ProductSheet } from "@/components/menu/ProductSheet";
 import { getDailyFeaturedProducts } from "@/lib/featured";
 import { categorySlideVariants } from "@/lib/motion";
 import { normalizeSearchQuery, searchMenuProducts } from "@/lib/search";
+import { useIsMobile } from "@/lib/useIsMobile";
 import { useScrollCompact } from "@/lib/useScrollCompact";
 import type { MenuData, Product } from "@/lib/types";
 
 const gridVariants = {
   hidden: {},
   show: {
-    transition: { staggerChildren: 0.03, delayChildren: 0.02 },
+    transition: { staggerChildren: 0.015, delayChildren: 0 },
   },
 };
 
@@ -38,6 +39,8 @@ export function MenuView({ menu }: { menu: MenuData }) {
   const [searchQuery, setSearchQuery] = useState("");
   const directionRef = useRef(0);
   const { progress: scrollProgress, compact } = useScrollCompact();
+  const isMobile = useIsMobile();
+  const enableSharedPhoto = !isMobile;
 
   const navItems = useMemo(
     () =>
@@ -110,6 +113,7 @@ export function MenuView({ menu }: { menu: MenuData }) {
               locale={menu.tenant.locale}
               selectedId={selected?.id ?? null}
               photoSource={photoSource}
+              enableSharedPhoto={enableSharedPhoto}
               onOpen={(product) => openProduct(product, "featured")}
             />
           ) : null}
@@ -162,6 +166,7 @@ export function MenuView({ menu }: { menu: MenuData }) {
                           layout
                           liveFilter
                           sharedPhoto={
+                            enableSharedPhoto &&
                             (!selected || selected.id !== product.id) &&
                             !featuredIds.has(product.id)
                           }
@@ -174,7 +179,7 @@ export function MenuView({ menu }: { menu: MenuData }) {
                 )}
               </motion.section>
             ) : active ? (
-              <AnimatePresence mode="wait" custom={directionRef.current}>
+              <AnimatePresence mode="sync" custom={directionRef.current}>
                 <motion.section
                   key={active.id}
                   custom={directionRef.current}
@@ -209,6 +214,7 @@ export function MenuView({ menu }: { menu: MenuData }) {
                         locale={menu.tenant.locale}
                         onOpen={(product) => openProduct(product, "grid")}
                         sharedPhoto={
+                          enableSharedPhoto &&
                           (!selected ||
                             (selected.id === product.id &&
                               photoSource === "grid")) &&
@@ -228,6 +234,7 @@ export function MenuView({ menu }: { menu: MenuData }) {
             currency={menu.tenant.currency}
             locale={menu.tenant.locale}
             onClose={closeProduct}
+            sharedPhoto={enableSharedPhoto}
           />
         </div>
       </div>

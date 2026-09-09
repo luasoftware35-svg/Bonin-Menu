@@ -20,7 +20,7 @@ export function CompactHeader({ tenant, visible }: CompactHeaderProps) {
         opacity: visible ? 1 : 0,
       }}
       transition={reduced ? { duration: 0 } : { duration: 0.22, ease: easeOut }}
-      className="pointer-events-none fixed inset-x-0 top-0 z-40 border-b border-line/40 bg-cream/95 backdrop-blur-md"
+      className="pointer-events-none fixed inset-x-0 top-0 z-40 border-b border-line/40 bg-cream/98"
       aria-hidden={!visible}
     >
       <div className="mx-auto flex max-w-menu items-center justify-center gap-2 px-4 py-2 pt-[max(0.45rem,env(safe-area-inset-top))]">

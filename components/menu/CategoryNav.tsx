@@ -38,7 +38,7 @@ export function CategoryNav({
     <nav
       id="menu"
       aria-label="Kategoriler"
-      className={`sticky top-0 z-30 border-b border-line/40 bg-cream/95 backdrop-blur-md transition-shadow duration-300 ${
+      className={`sticky top-0 z-30 border-b border-line/40 bg-cream/98 transition-shadow duration-200 ${
         scrolled
           ? "shadow-[0_12px_32px_-16px_rgba(59,36,22,0.45)]"
           : "shadow-[0_8px_24px_-18px_rgba(59,36,22,0.35)]"
@@ -79,7 +79,6 @@ export function CategoryNav({
                           alt=""
                           fill
                           sizes="32px"
-                          unoptimized
                           className={PHOTO_FIT}
                         />
                       ) : null}
