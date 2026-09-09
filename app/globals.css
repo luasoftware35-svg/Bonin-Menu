@@ -173,24 +173,6 @@ body {
   }
 }
 
-.featured-pick-glow {
-  animation: featured-glow 2.8s ease-in-out infinite;
-}
-
-@keyframes featured-glow {
-  0%,
-  100% {
-    box-shadow:
-      0 14px 36px -22px rgba(59, 36, 22, 0.45),
-      0 0 0 0 rgba(160, 79, 23, 0.12);
-  }
-  50% {
-    box-shadow:
-      0 18px 40px -18px rgba(59, 36, 22, 0.5),
-      0 0 0 2px rgba(160, 79, 23, 0.14);
-  }
-}
-
 .scrollbar-none {
   scrollbar-width: none;
   -ms-overflow-style: none;

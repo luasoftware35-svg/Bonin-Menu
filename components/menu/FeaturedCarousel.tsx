@@ -20,7 +20,7 @@ type FeaturedCarouselProps = {
   onOpen: (product: Product) => void;
 };
 
-const ROTATE_MS = 4500;
+const ROTATE_MS = 3800;
 
 export function FeaturedCarousel({
   items,
@@ -41,14 +41,14 @@ export function FeaturedCarousel({
   }, [items]);
 
   useEffect(() => {
-    if (reduced || items.length <= 1 || paused) return;
+    if (items.length <= 1 || paused) return;
 
     const timer = window.setInterval(() => {
       setIndex((prev) => (prev + 1) % items.length);
     }, ROTATE_MS);
 
     return () => window.clearInterval(timer);
-  }, [items.length, paused, reduced]);
+  }, [items.length, paused]);
 
   if (!current) return null;
 
@@ -65,11 +65,10 @@ export function FeaturedCarousel({
     <motion.section
       className="px-3 pt-1 sm:px-4"
       aria-label="Günün önerileri"
+      aria-live="polite"
       {...fadeUp(!!reduced, 0.18)}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
-      onTouchStart={() => setPaused(true)}
-      onTouchEnd={() => setPaused(false)}
     >
       <div className="mb-2 flex items-center justify-between px-0.5">
         <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-cocoa">
@@ -80,17 +79,17 @@ export function FeaturedCarousel({
         </p>
       </div>
 
-      <div className="relative overflow-hidden">
+      <div className="relative min-h-[5.25rem] overflow-hidden sm:min-h-[5.75rem]">
         <AnimatePresence mode="wait" initial={false}>
           <motion.button
             key={current.product.id}
             type="button"
             onClick={() => onOpen(current.product)}
-            initial={reduced ? false : { opacity: 0, x: 24 }}
+            initial={reduced ? { opacity: 0 } : { opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
-            exit={reduced ? { opacity: 0 } : { opacity: 0, x: -24 }}
-            transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
-            className="featured-pick-glow group flex w-full items-center gap-3 overflow-hidden rounded-[1.35rem] bg-white p-2.5 text-left ring-1 ring-cocoa/15 transition-transform duration-200 active:scale-[0.995] sm:p-3"
+            exit={reduced ? { opacity: 0 } : { opacity: 0, x: -20 }}
+            transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
+            className="group absolute inset-x-0 top-0 flex w-full items-center gap-3 overflow-hidden rounded-[1.35rem] bg-white p-2.5 text-left shadow-[0_12px_32px_-20px_rgba(59,36,22,0.45)] ring-1 ring-black/5 transition-transform duration-200 active:scale-[0.995] sm:p-3"
           >
             <span
               className={`relative h-[4.5rem] w-[4.5rem] shrink-0 overflow-hidden rounded-[1rem] ${PHOTO_WELL} sm:h-20 sm:w-20`}
@@ -122,7 +121,7 @@ export function FeaturedCarousel({
               ) : null}
             </span>
             <span className="min-w-0 flex-1">
-              <span className="mt-1.5 block truncate text-[14px] font-semibold text-ink">
+              <span className="block truncate text-[14px] font-semibold text-ink">
                 {current.product.name}
               </span>
               <span className="mt-0.5 block text-[11px] text-mute">
@@ -145,6 +144,7 @@ export function FeaturedCarousel({
               key={item.product.id}
               type="button"
               aria-label={`${item.product.name} önerisini göster`}
+              aria-current={dotIndex === index ? "true" : undefined}
               onClick={() => setIndex(dotIndex)}
               className={`h-1.5 rounded-full transition-all duration-200 ${
                 dotIndex === index
