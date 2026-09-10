@@ -25,7 +25,7 @@ export async function getMenuBySlug(slug: string): Promise<MenuData | null> {
   const { data: tenantRow, error: tenantError } = await supabase
     .from("tenants")
     .select(
-      "id, slug, name, tagline, logo_url, address, hours, instagram, maps_url, currency, default_locale",
+      "id, slug, name, tagline, slogan, logo_url, address, hours, instagram, maps_url, currency, default_locale",
     )
     .eq("slug", slug)
     .eq("is_active", true)
@@ -57,7 +57,7 @@ export async function getMenuBySlug(slug: string): Promise<MenuData | null> {
     slug: tenantRow.slug,
     name: tenantRow.name,
     tagline: tenantRow.tagline ?? "",
-    slogan: null,
+    slogan: tenantRow.slogan ?? null,
     logoUrl: tenantRow.logo_url,
     address: tenantRow.address ?? "",
     hours: tenantRow.hours ?? "",
