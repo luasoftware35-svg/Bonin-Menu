@@ -5,7 +5,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const base = getSiteUrl();
   return [
     {
-      url: `${base}/menu/bonin`,
+      url: base,
       lastModified: new Date(),
       changeFrequency: "daily",
       priority: 1,

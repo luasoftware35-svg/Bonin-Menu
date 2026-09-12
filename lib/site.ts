@@ -3,7 +3,7 @@ export function getSiteUrl() {
   if (configured) return configured.replace(/\/$/, "");
 
   if (process.env.VERCEL_ENV === "production") {
-    return "https://boninmenu.vercel.app";
+    return "https://www.bonin.tr";
   }
 
   const vercel = process.env.VERCEL_URL?.trim();
