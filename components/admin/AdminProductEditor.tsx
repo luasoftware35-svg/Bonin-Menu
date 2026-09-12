@@ -77,6 +77,16 @@ export default function AdminProductEditor({
       return;
     }
 
+    const kcalTrim = energyKcal.trim();
+    let parsedKcal: number | null = null;
+    if (kcalTrim) {
+      parsedKcal = Number.parseInt(kcalTrim, 10);
+      if (!Number.isFinite(parsedKcal) || parsedKcal < 0) {
+        setMessage("Kalori tam sayı olmalı (ör. 390).");
+        return;
+      }
+    }
+
     setSaving(true);
 
     const { error: productError } = await supabase
@@ -84,6 +94,7 @@ export default function AdminProductEditor({
       .update({
         price_cents: priceCents,
         image_url: imageUrl,
+        energy_kcal: parsedKcal,
         portion_note: portionNote.trim() || null,
         is_available: isAvailable,
       })
@@ -202,7 +213,7 @@ export default function AdminProductEditor({
       </AdminField>
 
       <div className="grid grid-cols-2 gap-3">
-        <AdminField label="Kalori (kcal)" htmlFor="kcal" hint="Menüde gösterilir. Özel değer için Supabase kalori sütunu aktif olmalı.">
+        <AdminField label="Kalori (kcal)" htmlFor="kcal" hint="Boş bırakılırsa menüde gösterilmez.">
           <input
             id="kcal"
             inputMode="numeric"

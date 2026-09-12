@@ -42,7 +42,7 @@ export async function loadAdminProducts(
   const { data } = await supabase
     .from("products")
     .select(
-      "id, slug, category_id, price_cents, image_url, portion_note, is_available, sort_order, product_translations(locale, name)",
+      "id, slug, category_id, price_cents, image_url, portion_note, energy_kcal, is_available, sort_order, product_translations(locale, name)",
     )
     .eq("tenant_id", tenantId)
     .order("sort_order", { ascending: true });
@@ -58,7 +58,7 @@ export async function loadAdminProducts(
       name,
       priceCents: row.price_cents,
       imageUrl: row.image_url,
-      energyKcal: seed?.energyKcal ?? null,
+      energyKcal: row.energy_kcal ?? seed?.energyKcal ?? null,
       portionNote: row.portion_note ?? seed?.portionNote ?? null,
       isAvailable: row.is_available,
       sortOrder: row.sort_order,
@@ -75,7 +75,7 @@ export async function loadAdminProduct(
   const { data: row } = await supabase
     .from("products")
     .select(
-      "id, slug, category_id, price_cents, image_url, portion_note, is_available, sort_order, product_translations(locale, name, description)",
+      "id, slug, category_id, price_cents, image_url, portion_note, energy_kcal, is_available, sort_order, product_translations(locale, name, description)",
     )
     .eq("tenant_id", tenantId)
     .eq("id", productId)
@@ -98,7 +98,7 @@ export async function loadAdminProduct(
     description: tr?.description ?? "",
     priceCents: row.price_cents,
     imageUrl: row.image_url,
-    energyKcal: seed?.energyKcal ?? null,
+    energyKcal: row.energy_kcal ?? seed?.energyKcal ?? null,
     isAvailable: row.is_available,
     sortOrder: row.sort_order,
     portionNote: row.portion_note ?? seed?.portionNote ?? null,

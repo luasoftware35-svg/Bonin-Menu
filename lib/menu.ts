@@ -47,7 +47,7 @@ export async function getMenuBySlug(slug: string): Promise<MenuData | null> {
   const { data: productRows } = await supabase
     .from("products")
     .select(
-      "id, slug, category_id, price_cents, image_url, allergens, portion_note, is_available, sort_order, product_translations(locale, name, description, ingredients_note)",
+      "id, slug, category_id, price_cents, image_url, allergens, portion_note, energy_kcal, is_available, sort_order, product_translations(locale, name, description, ingredients_note)",
     )
     .eq("tenant_id", tenantRow.id)
     .eq("is_available", true)
@@ -86,7 +86,7 @@ export async function getMenuBySlug(slug: string): Promise<MenuData | null> {
       priceCents: row.price_cents,
       imageUrl: row.image_url,
       allergens: row.allergens ?? [],
-      energyKcal: seedMeta?.energyKcal ?? null,
+      energyKcal: row.energy_kcal ?? seedMeta?.energyKcal ?? null,
       portionNote: row.portion_note ?? seedMeta?.portionNote ?? null,
       ingredientsNote: translation?.ingredients_note ?? null,
       isAvailable: row.is_available,
