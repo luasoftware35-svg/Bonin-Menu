@@ -15,15 +15,15 @@ export default function AdminMenuClient({
   categories: AdminCategory[];
   products: AdminProductListItem[];
 }) {
-  const [categoryId, setCategoryId] = useState(categories[0]?.id ?? "");
+  const [categoryId, setCategoryId] = useState("");
   const [query, setQuery] = useState("");
 
   const filtered = useMemo(() => {
     const q = query.trim().toLocaleLowerCase("tr");
     return products.filter((p) => {
+      if (q) return p.name.toLocaleLowerCase("tr").includes(q);
       if (categoryId && p.categoryId !== categoryId) return false;
-      if (!q) return true;
-      return p.name.toLocaleLowerCase("tr").includes(q);
+      return true;
     });
   }, [products, categoryId, query]);
 
@@ -52,6 +52,17 @@ export default function AdminMenuClient({
       />
 
       <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 scrollbar-none">
+        <button
+          type="button"
+          onClick={() => setCategoryId("")}
+          className={`shrink-0 rounded-full px-4 py-2.5 text-sm font-bold transition-colors ${
+            categoryId === ""
+              ? "bg-cocoa text-white"
+              : "bg-white text-ink/70 ring-1 ring-cocoa/15"
+          }`}
+        >
+          Tümü
+        </button>
         {categories.map((cat) => {
           const active = cat.id === categoryId;
           return (
