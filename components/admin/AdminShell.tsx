@@ -7,6 +7,7 @@ import type { AdminTenant } from "@/lib/admin/types";
 
 const nav = [
   { href: "/admin/menu", label: "Menü", icon: "☰" },
+  { href: "/admin/istatistik", label: "QR", icon: "📊" },
   { href: "/admin/ayarlar", label: "Ayarlar", icon: "⚙" },
 ] as const;
 
