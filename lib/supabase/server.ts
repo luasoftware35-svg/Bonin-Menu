@@ -1,10 +1,10 @@
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+import { getSupabaseAnonEnv } from "@/lib/supabase/env";
 
 export function getSupabaseServerClient(): SupabaseClient | null {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  const { url, anonKey: key, configured } = getSupabaseAnonEnv();
 
-  if (!url || !key) return null;
+  if (!configured) return null;
   return createClient(url, key, {
     auth: { persistSession: false, autoRefreshToken: false },
   });

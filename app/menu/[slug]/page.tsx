@@ -3,7 +3,8 @@ import { notFound } from "next/navigation";
 import { MenuView } from "@/components/menu/MenuView";
 import { getMenuBySlug } from "@/lib/menu";
 
-export const revalidate = 60;
+/** Admin düzenlemeleri hemen görünsün (ISR kapalı). */
+export const dynamic = "force-dynamic";
 
 type PageProps = {
   params: { slug: string };
