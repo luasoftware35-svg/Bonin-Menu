@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>BONİN · Menü QR</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        background: #e8dfd3;
+        font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+        color: #3b2416;
+      }
+      .card {
+        width: min(100%, 420px);
+        margin: 24px;
+        padding: 36px 28px 32px;
+        text-align: center;
+        background: #f5eee4;
+        border-radius: 28px;
+        box-shadow: 0 24px 60px -28px rgba(59, 36, 22, 0.45);
+        border: 1px solid rgb(160 79 23 / 0.12);
+      }
+      .logo {
+        width: min(100%, 220px);
+        height: auto;
+        display: block;
+        margin: 0 auto 8px;
+      }
+      .tagline {
+        margin: 0 0 24px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: #a04f17;
+      }
+      .qr-wrap {
+        display: inline-block;
+        padding: 14px;
+        background: #fff;
+        border-radius: 20px;
+        box-shadow: 0 12px 32px -20px rgba(59, 36, 22, 0.35);
+      }
+      .qr-wrap img {
+        display: block;
+        width: 240px;
+        height: 240px;
+      }
+      h1 {
+        margin: 22px 0 6px;
+        font-size: 1.35rem;
+        font-weight: 800;
+        color: #a04f17;
+      }
+      p {
+        margin: 0;
+        font-size: 0.95rem;
+        line-height: 1.5;
+        color: rgb(59 36 22 / 0.75);
+      }
+      .url {
+        margin-top: 14px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: #a04f17;
+        word-break: break-all;
+      }
+      @media print {
+        body {
+          background: #fff;
+        }
+        .card {
+          margin: 0;
+          box-shadow: none;
+          border: none;
+        }
+        .no-print {
+          display: none;
+        }
+      }
+      .print-btn {
+        margin-top: 20px;
+        padding: 12px 22px;
+        border: none;
+        border-radius: 999px;
+        background: #a04f17;
+        color: #f5eee4;
+        font-size: 0.95rem;
+        font-weight: 700;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <img class="logo" src="/brand/logo-wordmark.png" alt="BONİN" width="785" height="463" />
+      <p class="tagline">Bakery &amp; Eatery</p>
+      <div class="qr-wrap">
+        <img src="/qr/bonin-menu-qr.png" width="1024" height="1024" alt="Menü QR kodu" />
+      </div>
+      <h1>Dijital menü</h1>
+      <p>Kameranızla QR kodu okutun,<br />günün lezzetlerini keşfedin.</p>
+      <p class="url">www.bonin.tr</p>
+      <button type="button" class="print-btn no-print" onclick="window.print()">
+        Yazdır / PDF kaydet
+      </button>
+    </div>
+  </body>
+</html>
