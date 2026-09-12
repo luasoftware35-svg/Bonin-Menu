@@ -107,6 +107,7 @@ async function main() {
           image_url: p.imageUrl,
           allergens: p.allergens,
           portion_note: p.portionNote,
+          energy_kcal: p.energyKcal,
           is_available: p.isAvailable,
           sort_order: prodOrder,
         })

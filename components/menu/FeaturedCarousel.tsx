@@ -135,6 +135,9 @@ export function FeaturedCarousel({
               </span>
               <span className="mt-0.5 block text-[11px] text-mute">
                 {current.categoryName}
+                {current.product.energyKcal != null
+                  ? ` · ${current.product.energyKcal} kcal`
+                  : ""}
               </span>
             </span>
 

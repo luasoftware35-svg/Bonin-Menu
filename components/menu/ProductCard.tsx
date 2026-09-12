@@ -44,7 +44,9 @@ export function ProductCard({
   const reduced = useReducedMotion();
   const price = formatPrice(product.priceCents, currency, locale);
   const energy =
-    product.energyKcal != null ? `${product.energyKcal} kcal` : null;
+    product.energyKcal != null
+      ? `${product.energyKcal} kcal${product.portionNote ? ` / ${product.portionNote}` : ""}`
+      : null;
   const photoLayoutId =
     sharedPhoto && !reduced ? productPhotoLayoutId(product.id) : undefined;
 

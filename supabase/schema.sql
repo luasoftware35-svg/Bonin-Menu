@@ -44,6 +44,7 @@ create table if not exists public.products (
   image_url text,
   allergens text[] not null default '{}',
   portion_note text,
+  energy_kcal int check (energy_kcal is null or energy_kcal >= 0),
   is_available boolean not null default true,
   sort_order int not null default 0,
   unique (tenant_id, slug)

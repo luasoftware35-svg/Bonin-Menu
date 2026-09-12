@@ -24,6 +24,10 @@ export default function AdminProductEditor({
   const [name, setName] = useState(product.name);
   const [priceTl, setPriceTl] = useState(centsToTlInput(product.priceCents));
   const [description, setDescription] = useState(product.description);
+  const [energyKcal, setEnergyKcal] = useState(
+    product.energyKcal != null ? String(product.energyKcal) : "",
+  );
+  const [portionNote, setPortionNote] = useState(product.portionNote ?? "");
   const [isAvailable, setIsAvailable] = useState(product.isAvailable);
   const [imageUrl, setImageUrl] = useState(product.imageUrl);
   const [saving, setSaving] = useState(false);
@@ -80,6 +84,7 @@ export default function AdminProductEditor({
       .update({
         price_cents: priceCents,
         image_url: imageUrl,
+        portion_note: portionNote.trim() || null,
         is_available: isAvailable,
       })
       .eq("id", product.id)
@@ -195,6 +200,28 @@ export default function AdminProductEditor({
           onChange={(e) => setPriceTl(e.target.value)}
         />
       </AdminField>
+
+      <div className="grid grid-cols-2 gap-3">
+        <AdminField label="Kalori (kcal)" htmlFor="kcal" hint="Menüde gösterilir. Özel değer için Supabase kalori sütunu aktif olmalı.">
+          <input
+            id="kcal"
+            inputMode="numeric"
+            className={adminInputClass}
+            value={energyKcal}
+            onChange={(e) => setEnergyKcal(e.target.value.replace(/[^\d]/g, ""))}
+            placeholder="390"
+          />
+        </AdminField>
+        <AdminField label="Porsiyon" htmlFor="portion" hint="Örn. adet, dilim">
+          <input
+            id="portion"
+            className={adminInputClass}
+            value={portionNote}
+            onChange={(e) => setPortionNote(e.target.value)}
+            placeholder="adet"
+          />
+        </AdminField>
+      </div>
 
       <AdminField label="Açıklama" htmlFor="desc">
         <textarea

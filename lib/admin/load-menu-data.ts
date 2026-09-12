@@ -4,6 +4,7 @@ import type {
   AdminProductDetail,
   AdminProductListItem,
 } from "@/lib/admin/types";
+import { seedMetaForProductName } from "@/lib/seed/product-fallback";
 
 type NamedRow = { locale: string; name: string };
 type ProductTrRow = NamedRow & {
@@ -41,22 +42,28 @@ export async function loadAdminProducts(
   const { data } = await supabase
     .from("products")
     .select(
-      "id, slug, category_id, price_cents, image_url, is_available, sort_order, product_translations(locale, name)",
+      "id, slug, category_id, price_cents, image_url, portion_note, is_available, sort_order, product_translations(locale, name)",
     )
     .eq("tenant_id", tenantId)
     .order("sort_order", { ascending: true });
 
-  return (data ?? []).map((row) => ({
-    id: row.id,
-    slug: row.slug,
-    categoryId: row.category_id,
-    name:
-      pickName(row.product_translations as NamedRow[] | null, locale) || row.slug,
-    priceCents: row.price_cents,
-    imageUrl: row.image_url,
-    isAvailable: row.is_available,
-    sortOrder: row.sort_order,
-  }));
+  return (data ?? []).map((row) => {
+    const name =
+      pickName(row.product_translations as NamedRow[] | null, locale) || row.slug;
+    const seed = seedMetaForProductName(name);
+    return {
+      id: row.id,
+      slug: row.slug,
+      categoryId: row.category_id,
+      name,
+      priceCents: row.price_cents,
+      imageUrl: row.image_url,
+      energyKcal: seed?.energyKcal ?? null,
+      portionNote: row.portion_note ?? seed?.portionNote ?? null,
+      isAvailable: row.is_available,
+      sortOrder: row.sort_order,
+    };
+  });
 }
 
 export async function loadAdminProduct(
@@ -80,16 +87,20 @@ export async function loadAdminProduct(
   const tr =
     translations?.find((t) => t.locale === locale) ?? translations?.[0];
 
+  const name = tr?.name ?? row.slug;
+  const seed = seedMetaForProductName(name);
+
   return {
     id: row.id,
     slug: row.slug,
     categoryId: row.category_id,
-    name: tr?.name ?? row.slug,
+    name,
     description: tr?.description ?? "",
     priceCents: row.price_cents,
     imageUrl: row.image_url,
+    energyKcal: seed?.energyKcal ?? null,
     isAvailable: row.is_available,
     sortOrder: row.sort_order,
-    portionNote: row.portion_note,
+    portionNote: row.portion_note ?? seed?.portionNote ?? null,
   };
 }

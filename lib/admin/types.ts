@@ -19,11 +19,12 @@ export type AdminProductListItem = {
   name: string;
   priceCents: number;
   imageUrl: string | null;
+  energyKcal: number | null;
+  portionNote: string | null;
   isAvailable: boolean;
   sortOrder: number;
 };
 
 export type AdminProductDetail = AdminProductListItem & {
   description: string;
-  portionNote: string | null;
 };

@@ -1,4 +1,5 @@
 import { boninMenu } from "@/lib/seed/bonin";
+import { seedMetaForProductName } from "@/lib/seed/product-fallback";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import type { Category, MenuData, Product, Tenant } from "@/lib/types";
 
@@ -74,16 +75,19 @@ export async function getMenuBySlug(slug: string): Promise<MenuData | null> {
   for (const row of productRows ?? []) {
     const translations = row.product_translations as ProductTranslation[] | null;
     const translation = pickTranslation(translations, locale);
+    const displayName = translation?.name ?? row.slug;
+    const seedMeta = seedMetaForProductName(displayName);
+
     const product: Product = {
       id: row.id,
       slug: row.slug,
-      name: translation?.name ?? row.slug,
+      name: displayName,
       description: translation?.description ?? "",
       priceCents: row.price_cents,
       imageUrl: row.image_url,
       allergens: row.allergens ?? [],
-      energyKcal: null,
-      portionNote: row.portion_note,
+      energyKcal: seedMeta?.energyKcal ?? null,
+      portionNote: row.portion_note ?? seedMeta?.portionNote ?? null,
       ingredientsNote: translation?.ingredients_note ?? null,
       isAvailable: row.is_available,
     };
