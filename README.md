@@ -1,6 +1,6 @@
 # Bonin QR Menü
 
-Mobil öncelikli dijital menü. Supabase tanımlı değilse `/menu/bonin` yerel seed verisiyle açılır.
+Mobil öncelikli dijital menü. Canlı adres: ana sayfa (`/`). Supabase tanımlı değilse yerel seed verisiyle açılır.
 
 ```bash
 npm install

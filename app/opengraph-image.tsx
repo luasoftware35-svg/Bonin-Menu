@@ -1,22 +1,16 @@
 import { ImageResponse } from "next/og";
 import { MenuOgImage, menuOgImageSize } from "@/lib/brand/menu-og-image";
 import { getMenuBySlug } from "@/lib/menu";
-import { boninMenu } from "@/lib/seed/bonin";
 
-export const runtime = "edge";
 export const alt = "BONİN dijital menü";
 export const size = menuOgImageSize;
 export const contentType = "image/png";
 
-type Props = {
-  params: { slug: string };
-};
-
-export default async function OpenGraphImage({ params }: Props) {
-  const menu = await getMenuBySlug(params.slug);
+export default async function OpenGraphImage() {
+  const menu = await getMenuBySlug("bonin");
   const name = menu?.tenant.name ?? "BONİN";
-  const tagline = menu?.tenant.tagline ?? boninMenu.tenant.tagline;
-  const slogan = menu?.tenant.slogan ?? boninMenu.tenant.slogan ?? "Günün en güzel anı";
+  const tagline = menu?.tenant.tagline ?? "Bakery & Eatery";
+  const slogan = menu?.tenant.slogan ?? "Günün en güzel anı";
 
   return new ImageResponse(
     <MenuOgImage name={name} tagline={tagline} slogan={slogan} />,

@@ -18,8 +18,20 @@ const sans = Outfit({
 
 export const metadata: Metadata = {
   metadataBase: new URL(getSiteUrl()),
-  title: "BONİN · Menü",
+  applicationName: "BONİN Menü",
+  title: {
+    default: "BONİN · Menü",
+    template: "%s · BONİN",
+  },
   description: "BONİN Bakery & Eatery · Günün en güzel anı",
+  appleWebApp: {
+    capable: true,
+    title: "BONİN Menü",
+    statusBarStyle: "default",
+  },
+  formatDetection: {
+    telephone: false,
+  },
 };
 
 export const viewport: Viewport = {
