@@ -39,6 +39,8 @@ $$;
 revoke all on function public.record_qr_scan (text) from public;
 grant execute on function public.record_qr_scan (text) to anon, authenticated;
 
+drop policy if exists "tenant admin read qr scans" on public.qr_scan_events;
+
 create policy "tenant admin read qr scans"
   on public.qr_scan_events
   for select

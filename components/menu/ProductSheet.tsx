@@ -1,11 +1,10 @@
 "use client";
 
-import Image from "next/image";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useEffect } from "react";
 import { allergenText, formatPrice } from "@/lib/format";
 import { overlayFade, sheetSlide } from "@/lib/motion";
-import { isLocalMenuImage } from "@/lib/menu-image";
+import { MenuProductImage } from "@/components/menu/MenuProductImage";
 import { PHOTO_FIT, PHOTO_WELL } from "@/lib/photo";
 import { productPhotoLayoutId } from "@/lib/product-photo";
 import type { Product } from "@/lib/types";
@@ -84,22 +83,18 @@ export function ProductSheet({
                     className="absolute inset-0"
                     transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
                   >
-                    <Image
+                    <MenuProductImage
                       src={product.imageUrl}
                       alt={product.name}
-                      fill
-                      unoptimized={isLocalMenuImage(product.imageUrl)}
                       sizes="(max-width: 640px) 100vw, 480px"
                       className={PHOTO_FIT}
                       priority
                     />
                   </motion.div>
                 ) : (
-                  <Image
+                  <MenuProductImage
                     src={product.imageUrl}
                     alt={product.name}
-                    fill
-                    unoptimized={isLocalMenuImage(product.imageUrl)}
                     sizes="(max-width: 640px) 100vw, 480px"
                     className={PHOTO_FIT}
                     priority

@@ -1,23 +1,18 @@
 "use client";
 
-import Image from "next/image";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { formatPrice } from "@/lib/format";
 import type { FeaturedEntry } from "@/lib/featured";
 import { fadeUp } from "@/lib/motion";
-import { isLocalMenuImage } from "@/lib/menu-image";
 import { PHOTO_FIT, PHOTO_WELL } from "@/lib/photo";
-import { productPhotoLayoutId } from "@/lib/product-photo";
+import { MenuProductImage } from "@/components/menu/MenuProductImage";
 import type { Product } from "@/lib/types";
 
 type FeaturedCarouselProps = {
   items: FeaturedEntry[];
   currency: string;
   locale: string;
-  selectedId: string | null;
-  photoSource: "featured" | "grid" | null;
-  enableSharedPhoto?: boolean;
   onOpen: (product: Product) => void;
 };
 
@@ -27,9 +22,6 @@ export function FeaturedCarousel({
   items,
   currency,
   locale,
-  selectedId,
-  photoSource,
-  enableSharedPhoto = false,
   onOpen,
 }: FeaturedCarouselProps) {
   const reduced = useReducedMotion();
@@ -54,14 +46,6 @@ export function FeaturedCarousel({
   if (!current) return null;
 
   const price = formatPrice(current.product.priceCents, currency, locale);
-  const sharedPhoto =
-    enableSharedPhoto &&
-    (!selectedId ||
-      (selectedId === current.product.id && photoSource === "featured"));
-  const photoLayoutId = sharedPhoto
-    ? productPhotoLayoutId(current.product.id)
-    : undefined;
-
   return (
     <motion.section
       className="px-3 pt-1 sm:px-4"
@@ -101,31 +85,12 @@ export function FeaturedCarousel({
               className={`relative h-16 w-16 shrink-0 overflow-hidden rounded-[0.9rem] ${PHOTO_WELL} sm:h-[4.5rem] sm:w-[4.5rem]`}
             >
               {current.product.imageUrl ? (
-                photoLayoutId ? (
-                  <motion.div
-                    layoutId={photoLayoutId}
-                    className="absolute inset-0"
-                    transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
-                  >
-                    <Image
-                      src={current.product.imageUrl}
-                      alt=""
-                      fill
-                      unoptimized={isLocalMenuImage(current.product.imageUrl)}
-                      sizes="72px"
-                      className={PHOTO_FIT}
-                    />
-                  </motion.div>
-                ) : (
-                  <Image
-                    src={current.product.imageUrl}
-                    alt=""
-                    fill
-                    unoptimized={isLocalMenuImage(current.product.imageUrl)}
-                    sizes="72px"
-                    className={PHOTO_FIT}
-                  />
-                )
+                <MenuProductImage
+                  src={current.product.imageUrl}
+                  alt=""
+                  sizes="72px"
+                  className={PHOTO_FIT}
+                />
               ) : null}
             </span>
 

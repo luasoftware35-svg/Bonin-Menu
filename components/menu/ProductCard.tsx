@@ -1,9 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
+import { MenuProductImage } from "@/components/menu/MenuProductImage";
 import { formatPrice } from "@/lib/format";
-import { isLocalMenuImage } from "@/lib/menu-image";
 import { PHOTO_FIT, PHOTO_WELL } from "@/lib/photo";
 import { productPhotoLayoutId } from "@/lib/product-photo";
 import type { Product } from "@/lib/types";
@@ -74,21 +73,17 @@ export function ProductCard({
               className="absolute inset-0"
               transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
             >
-              <Image
+              <MenuProductImage
                 src={product.imageUrl}
                 alt=""
-                fill
-                unoptimized={isLocalMenuImage(product.imageUrl)}
                 sizes="(max-width: 640px) 45vw, 240px"
                 className={`${PHOTO_FIT} transition-transform duration-150 group-hover:scale-[1.03] group-active:scale-[1.01]`}
               />
             </motion.div>
           ) : (
-            <Image
+            <MenuProductImage
               src={product.imageUrl}
               alt=""
-              fill
-              unoptimized={isLocalMenuImage(product.imageUrl)}
               sizes="(max-width: 640px) 45vw, 240px"
               className={`${PHOTO_FIT} transition-transform duration-150 group-hover:scale-[1.03] group-active:scale-[1.01]`}
             />

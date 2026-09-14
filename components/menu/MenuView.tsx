@@ -111,9 +111,6 @@ export function MenuView({ menu }: { menu: MenuData }) {
               items={dailyFeatured}
               currency={menu.tenant.currency}
               locale={menu.tenant.locale}
-              selectedId={selected?.id ?? null}
-              photoSource={photoSource}
-              enableSharedPhoto={enableSharedPhoto}
               onOpen={(product) => openProduct(product, "featured")}
             />
           ) : null}
