@@ -19,7 +19,7 @@ const PHOTO: Record<string, string> = {
   "Bonin Cookie": "/menu/bonin-cookie.png",
   "Meyveli Tart": "/menu/cilekli-tart.png",
   "Kinder Cheesecake": "/menu/kinder-cheesecake.png",
-  "Limon Cheesecake": "photo-1524351199678-941a58a3df50",
+  "Limon Cheesecake": "/menu/limon-cheesecake.png",
   "Paris Prest": "/menu/paris-prest.png",
   Frambuaz: "/menu/frambuaz.png",
   Pistashio: "/menu/pistachio.png",
