@@ -38,7 +38,7 @@ const PHOTO: Record<string, string> = {
   Karışık: "/menu/karisik-pizza.png",
   "Dana Füme": "/menu/dana-fume-pizza.png",
   "Ton Balıklı": "/menu/ton-balikli-pizza.png",
-  BBQ: "/menu/bbq-pizza.jpg",
+  BBQ: "/menu/bbq-pizza.png",
   Gurme: "/menu/gurme-pizza.png",
   Hetsiban: "/menu/hetsiban-pizza.png",
   "Fettuccini Alfredo": "/menu/fettuccini-alfredo.png",

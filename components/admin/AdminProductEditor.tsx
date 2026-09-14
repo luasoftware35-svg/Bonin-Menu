@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { AdminField, adminInputClass } from "@/components/admin/AdminField";
 import { centsToTlInput, tlInputToCents } from "@/lib/admin/money";
+import { isLocalMenuImage } from "@/lib/menu-image";
 import { getSupabaseBrowserClient } from "@/lib/supabase/client";
 import type { AdminProductDetail, AdminTenant } from "@/lib/admin/types";
 
@@ -161,6 +162,7 @@ export default function AdminProductEditor({
             src={imageUrl}
             alt=""
             fill
+            unoptimized={isLocalMenuImage(imageUrl)}
             className="object-cover"
             sizes="(max-width: 512px) 100vw, 512px"
           />

@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { formatPrice } from "@/lib/format";
 import type { FeaturedEntry } from "@/lib/featured";
 import { fadeUp } from "@/lib/motion";
+import { isLocalMenuImage } from "@/lib/menu-image";
 import { PHOTO_FIT, PHOTO_WELL } from "@/lib/photo";
 import { productPhotoLayoutId } from "@/lib/product-photo";
 import type { Product } from "@/lib/types";
@@ -110,6 +111,7 @@ export function FeaturedCarousel({
                       src={current.product.imageUrl}
                       alt=""
                       fill
+                      unoptimized={isLocalMenuImage(current.product.imageUrl)}
                       sizes="72px"
                       className={PHOTO_FIT}
                     />
@@ -119,6 +121,7 @@ export function FeaturedCarousel({
                     src={current.product.imageUrl}
                     alt=""
                     fill
+                    unoptimized={isLocalMenuImage(current.product.imageUrl)}
                     sizes="72px"
                     className={PHOTO_FIT}
                   />

@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import { formatPrice } from "@/lib/format";
+import { isLocalMenuImage } from "@/lib/menu-image";
 import { PHOTO_FIT, PHOTO_WELL } from "@/lib/photo";
 import { productPhotoLayoutId } from "@/lib/product-photo";
 import type { Product } from "@/lib/types";
@@ -77,6 +78,7 @@ export function ProductCard({
                 src={product.imageUrl}
                 alt=""
                 fill
+                unoptimized={isLocalMenuImage(product.imageUrl)}
                 sizes="(max-width: 640px) 45vw, 240px"
                 className={`${PHOTO_FIT} transition-transform duration-150 group-hover:scale-[1.03] group-active:scale-[1.01]`}
               />
@@ -86,6 +88,7 @@ export function ProductCard({
               src={product.imageUrl}
               alt=""
               fill
+              unoptimized={isLocalMenuImage(product.imageUrl)}
               sizes="(max-width: 640px) 45vw, 240px"
               className={`${PHOTO_FIT} transition-transform duration-150 group-hover:scale-[1.03] group-active:scale-[1.01]`}
             />

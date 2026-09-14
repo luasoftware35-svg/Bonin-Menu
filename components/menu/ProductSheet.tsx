@@ -5,6 +5,7 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useEffect } from "react";
 import { allergenText, formatPrice } from "@/lib/format";
 import { overlayFade, sheetSlide } from "@/lib/motion";
+import { isLocalMenuImage } from "@/lib/menu-image";
 import { PHOTO_FIT, PHOTO_WELL } from "@/lib/photo";
 import { productPhotoLayoutId } from "@/lib/product-photo";
 import type { Product } from "@/lib/types";
@@ -87,6 +88,7 @@ export function ProductSheet({
                       src={product.imageUrl}
                       alt={product.name}
                       fill
+                      unoptimized={isLocalMenuImage(product.imageUrl)}
                       sizes="(max-width: 640px) 100vw, 480px"
                       className={PHOTO_FIT}
                       priority
@@ -97,6 +99,7 @@ export function ProductSheet({
                     src={product.imageUrl}
                     alt={product.name}
                     fill
+                    unoptimized={isLocalMenuImage(product.imageUrl)}
                     sizes="(max-width: 640px) 100vw, 480px"
                     className={PHOTO_FIT}
                     priority

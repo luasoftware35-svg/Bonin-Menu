@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { formatTl } from "@/lib/admin/money";
+import { isLocalMenuImage } from "@/lib/menu-image";
 import type { AdminCategory, AdminProductListItem, AdminTenant } from "@/lib/admin/types";
 
 export default function AdminMenuClient({
@@ -95,6 +96,7 @@ export default function AdminMenuClient({
                     src={product.imageUrl}
                     alt=""
                     fill
+                    unoptimized={isLocalMenuImage(product.imageUrl)}
                     className="object-cover"
                     sizes="56px"
                   />
